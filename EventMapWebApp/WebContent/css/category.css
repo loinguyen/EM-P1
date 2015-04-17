@@ -1,0 +1,141 @@
+
+@font-face {
+	font-family: 'icomoonRegular';
+    src: url('../fonts/icomoon/icomoon.eot');
+    src: url('../fonts/icomoon/icomoon.eot') format('embedded-opentype'),
+         url('../fonts/icomoon/icomoon.woff') format('woff'),
+         url('../fonts/icomoon/icomoon.ttf') format('truetype'),
+         url('../fonts/icomoon/icomoon.svg#icomoonRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* General button style (reset) */
+.btn {
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	background: none;
+	cursor: pointer;
+	padding: 25px 80px;
+	display: inline-block;
+	margin: 15px 30px;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 700;
+	outline: none;
+	position: relative;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.btn:after {
+	content: '';
+	position: absolute;
+	z-index: -1;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+/* Pseudo elements for icons */
+.btn:before {
+	font-family: 'icomoonRegular';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+}
+
+.icon-music:before {
+	content: "\e011";
+}
+.icon-workshop:before {
+	content: "\e021";
+}
+.icon-sport:before {
+	content: "\e0e2";
+}
+.icon-art:before {
+	content: "\e00f";
+}
+.icon-film:before {
+	content: "\e014";
+}
+.icon-meeting:before {
+	content: "\e073";
+}
+.icon-promotion:before {
+	content: "\e016";
+}
+.icon-others:before {
+	content: "\e04e";
+}
+
+/* Button 3 */
+.btn-3 {
+	background: #fcad26;
+	color: #fff;
+}
+
+.btn-3:hover {
+	background: #f29e0d;
+}
+
+.btn-3:active {
+	background: #f58500;
+	top: 2px;
+}
+
+.btn-3:before {
+	position: absolute;
+	height: 100%;
+	left: 0;
+	top: 0;
+	line-height: 1.5;
+	font-size: 2em;
+	width: 60px;
+}
+
+/* Button 3d */
+.btn-3d {
+	padding: 15px 60px 15px 120px;
+}
+
+.btn-3d:before {
+	background: #fff;
+	color: #fcad26;
+	z-index: 2;
+}
+
+.btn-3d:after {
+	width: 20px;
+	height: 20px;
+	background: #fff;
+	z-index: 1;
+	left: 55px;
+	top: 50%;
+	margin: -10px 0 0 -10px;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.btn-3d:active:before {
+	color: #f58500;
+}
+
+.btn-3d:active {
+	top: 0;
+}
+
+.btn-3d:active:after {
+	left: 60px;
+}

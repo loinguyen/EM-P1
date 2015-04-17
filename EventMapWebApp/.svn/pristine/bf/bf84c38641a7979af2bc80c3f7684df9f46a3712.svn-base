@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+     <package name="admin" extends="default" namespace="/admin">
+     	<action name="AdminLogin"
+            class="vn.com.lco.webapp.action.admin.AdminLoginAction">
+            <result name="input">/WEB-INF/page/admin/Login.jsp</result>            
+        </action>
+     	<action name="manage"
+            class="vn.com.lco.webapp.action.admin.ManageUsersAction">
+            <result name="input">/WEB-INF/page/admin/ManageUsers.jsp</result>            
+        </action>
+     	<action name="manageUsers"
+            class="vn.com.lco.webapp.action.admin.ManageUsersAction">
+            <result name="input">/WEB-INF/page/admin/ManageUsers.jsp</result>            
+        </action>
+     	<action name="loadListUser"
+            class="vn.com.lco.webapp.action.admin.ManageUsersAction" method="loadListUser">
+            <result type="json" />            
+        </action>
+        <action name="adminCreateUser"
+            class="vn.com.lco.webapp.action.admin.ManageUsersAction" method="createUser">
+            <result type="json" />            
+        </action>
+        <action name="adminEditUser"
+            class="vn.com.lco.webapp.action.admin.ManageUsersAction" method="update">
+            <result type="json" />            
+        </action>
+        <action name="loadListReport"
+            class="vn.com.lco.webapp.action.admin.ManageEventAction">
+            <result type="json" />            
+        </action>
+        <action name="adminCreateEventReportDetail"
+            class="vn.com.lco.webapp.action.admin.ManageEventAction" method="loadDetailEventReport">
+            <result type="json" />            
+        </action>
+         <action name="handleReport"
+            class="vn.com.lco.webapp.action.admin.ManageEventAction" method="handleReport">
+            <result type="json" />            
+        </action>
+         <action name="reportSendMessage"
+            class="vn.com.lco.webapp.action.admin.ManageEventAction" method="sendMessage">
+            <result type="json" />            
+        </action>
+     </package>
+</struts>

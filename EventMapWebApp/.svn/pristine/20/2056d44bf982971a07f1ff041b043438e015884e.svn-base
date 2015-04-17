@@ -1,0 +1,67 @@
+html {height: 100%}
+body {height: 100%; margin: 0; padding: 0}
+label { display: block; }
+input.text { margin-bottom:12px; width:95%; padding: .4em; }
+fieldset { padding:0; border:0; margin-top:25px; }
+body{
+	position: absolute;
+	width:100%;
+	height: auto;
+	margin: 0 auto;
+	top:0;
+	left:0;
+	background: #DDD;
+}
+#wrapper{
+	position:relative;
+	width:960px;
+	height: auto;
+	margin: 5px auto;
+	border:1px solid #d2d2d2;
+	border-radius:2px;
+	background:#FFF;
+	margin: 45px auto;
+}
+#wrapper h2{
+	margin:15px;
+	font-size:24pt;
+	margin-bottom: 30px;
+}
+input {
+	height: 24pt;
+	border-radius: 2px;
+	border: 1px solid #d2d2d2;
+	padding-left: 7px;
+}
+input:focus { 
+    outline:none;
+    border-color:#019875;
+    box-shadow:0 0 10px #9ecaed;
+}
+select:focus { 
+    outline:none;
+    border-color:#0A0;
+    box-shadow:0 0 10px #9ecaed;
+}
+select {
+	height: 24pt;
+	border-radius: 2px;
+	border: 1px solid #d2d2d2;
+	margin-left: 0;
+	padding-left: 5px;
+}
+select > option{
+	height: 18pt;
+}
+#btn-area{
+	padding: 1em;
+}
+#btn-area input{
+	padding-right: 1em;
+}
+th {
+	vertical-align: middle;
+}
+td {
+	vertical-align:middle!important;
+}

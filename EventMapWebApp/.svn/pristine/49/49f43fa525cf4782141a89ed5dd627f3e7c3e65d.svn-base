@@ -1,0 +1,76 @@
+@IMPORT url("detailsBase.css");
+#table-wrapper {
+	margin:1em;
+	text-align: left;
+}
+table, table.info{
+	border-spacing: 15px 15px;
+	border-collapse: separate;
+}
+table.info input[type=text], table.info input[type=password] {
+	width: 480px;
+}
+#user-info input[type=text]{
+	width: 560px;
+}
+#table-wrapper th {
+	font-size: 12pt;
+	vertical-align: middle;
+}
+th{
+	margin-right: 1em;
+	vertical-align: middle;
+}
+.btn-light {
+	margin: 1em 1em 0 0;
+}
+th#nav-bar {
+	margin-right: 1em;
+	vertical-align: baseline !important;
+}
+#profile-menu{
+	width: 180px;
+}
+.profile-tab{
+	font-weight:bold;
+	font-size:12pt;
+	color: #b2b2b2;
+}
+.profile-tab.active {
+	color: #019875;
+}
+.profile-content {
+	margin-left:1em;
+}
+#change-avatar{
+	display:none;
+}
+#data-table_wrapper{
+	width:700px;
+}
+.avatar-img{
+	float:left;
+}
+#change-avatar{
+	margin-left: 1em;
+}
+.statistic{
+	margin: 0.3em 115px;
+}
+.statistic label{
+	padding-bottom: 8px;
+}
+input#dob{
+	width:90px!important;
+}
+.avatar #loadingImg{
+	display: none;
+	right: auto;
+	top: auto;
+	margin-top: 44px;
+	margin-left: 44px;
+}
+#changepwd-loading{
+	top: auto;
+	right: auto;
+}

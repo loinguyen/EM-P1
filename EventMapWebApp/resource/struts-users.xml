@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+     <package name="user" extends="default" namespace="/user">
+     	<action name="userProfile" class="vn.com.lco.webapp.action.users.UserProfileAction">
+            <result name="success">/WEB-INF/page/user/UserProfile.jsp</result>
+            <result name="error">/404</result>       
+        </action>
+        <action name="updateUser" class="vn.com.lco.webapp.action.users.UserProfileAction" method="saveUser">
+            <result type="json" />           
+        </action>
+     	<action name="findbyUsername" class="vn.com.lco.webapp.action.users.UserAction" method="findbyUsername">
+            <result type="json" />            
+        </action>
+     	<action name="findByEmail" class="vn.com.lco.webapp.action.users.UserAction" method="findByEmail">
+            <result type="json" />            
+        </action>
+     	<action name="signup" class="vn.com.lco.webapp.action.users.UserAction" method="signup">
+            <result type="json" />            
+        </action>
+     	<action name="forgotpwd" class="vn.com.lco.webapp.action.users.UserAction" method="forgotpwd">
+            <result name="input">/WEB-INF/page/user/ForgotPassword.jsp</result>            
+        </action>
+     	<action name="resetpwd" class="vn.com.lco.webapp.action.users.UserAction" method="resetpwd">
+            <result type="json" />            
+        </action>
+     	<action name="changepwd" class="vn.com.lco.webapp.action.users.UserAction" method="changepwd">
+            <result type="json" />            
+        </action>
+     	<action name="emailInteraction/{id}" class="vn.com.lco.webapp.action.users.EmailAction" method="handleEmail">
+            <result name="success">/WEB-INF/page/user/EmailResult.jsp</result>            
+<!--             <result type="json" />             -->
+        </action>
+     </package>
+</struts>       

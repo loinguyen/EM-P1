@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+     <package name="event" extends="default" namespace="/event">
+     	<action name="manageEvent" class="vn.com.lco.webapp.action.event.ManageEventAction">
+            <result name="input">/WEB-INF/page/event/ManageEvent.jsp</result>            
+        </action>
+		<action name="saveEvent" class="vn.com.lco.webapp.action.event.CreateEventAction" method="saveEvent">
+     		<result name="input">/WEB-INF/page/event/CreateEvent.jsp</result>
+            <result name="success" type="json"/>            
+<!--             <result name="success">/WEB-INF/page/event/ManageEvent.jsp</result>             -->
+        </action>
+     	<action name="loadListEvents" class="vn.com.lco.webapp.action.event.ManageEventAction" method="loadListEvents">
+     		<result type="json"/>
+        </action>
+     	<action name="listEvents" class="vn.com.lco.webapp.action.event.ManageEventAction" method="listEvents">
+     		<result name="success">/WEB-INF/page/event/EventList.jsp</result>
+        </action>
+     	<action name="editEvent" class="vn.com.lco.webapp.action.event.CreateEventAction" method="editEvent">
+     		<result name="success">/WEB-INF/page/event/CreateEvent.jsp</result>
+     		<result name="error">/404.jsp</result>
+        </action>
+     	<action name="updateEvent" class="vn.com.lco.webapp.action.event.CreateEventAction" method="updateEvent">
+     		<result type="json"/>
+        </action>
+     	<action name="getTmpEvents" class="vn.com.lco.webapp.action.event.ManageEventAction" method="getTmpEvents">
+     		<result type="json"/>
+        </action>
+     	<action name="reportEvent" class="vn.com.lco.webapp.action.event.ManageEventAction" method="reportEvent">
+     		<result type="json"/>
+        </action>
+     	<action name="promoteEvent" class="vn.com.lco.webapp.action.event.ManageEventAction" method="promoteEvent">
+     		<result type="json"/>
+        </action>
+     	<action name="getTempEvent" class="vn.com.lco.webapp.action.event.ManageEventAction" method="getTempEvent">
+     		<result type="json"/>
+        </action>
+     	<action name="updateTempEvent" class="vn.com.lco.webapp.action.event.ManageEventAction" method="updateTempEvent">
+     		<result type="json"/>
+        </action>
+        <action name="list" class="vn.com.lco.webapp.action.event.EventAction">
+     		<result name="success">/WEB-INF/page/event/ListEvents.jsp</result>
+        </action>
+        <action name="createBookMark" class="vn.com.lco.webapp.action.event.EventAction" method="bookMark">
+     		<result type="json"/>
+        </action>
+        <action name="unBookMark" class="vn.com.lco.webapp.action.event.EventAction" method="unBookMark">
+     		<result type="json"/>
+        </action>
+        <action name="updateBookMark" class="vn.com.lco.webapp.action.event.EventAction" method="updateNotificationStatus">
+     		<result type="json"/>
+        </action>
+        <action name="loadListBookmark" class="vn.com.lco.webapp.action.event.EventHomeAction" method="loadAllBookMark">
+     		<result type="json"/>
+        </action>
+        
+<!--         EventDetail action -->
+		<action name="eventDetail" class="vn.com.lco.webapp.action.event.EventDetailAction" >
+     		<result name="success">/WEB-INF/page/event/EventDetail.jsp</result>
+     		<result name="error">/404.jsp</result>
+        </action>
+        <action name="postComment" class="vn.com.lco.webapp.action.event.EventDetailAction" method="postComment">
+     		<result type="json" />
+     		<result name="error"></result>
+        </action>
+        <action name="deleteEvent" class="vn.com.lco.webapp.action.event.EventDetailAction" method="deleteEvent">
+        	<result type="json" />
+        </action>
+        <action name="likeEvent" class="vn.com.lco.webapp.action.event.EventDetailAction" method="likeEvent">
+        	<result type="json" />
+        </action>
+<!--         EventList action -->
+		<action name="eventlist" class="vn.com.lco.webapp.action.event.EventListAction" >
+     		<result name="success">/WEB-INF/page/event/EventList.jsp</result>
+     		<result name="error"></result>
+        </action>
+
+<!-- 	Create event action -->
+		<action name="createEvent" class="vn.com.lco.webapp.action.event.CreateEventAction" >
+     		<result name="success">/WEB-INF/page/event/CreateEvent.jsp</result>
+        </action>
+     </package>
+</struts>    

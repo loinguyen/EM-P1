@@ -1,0 +1,94 @@
+.tt-dropdown-menu,
+.gist {
+  text-align: left;
+}
+/* site theme */
+/* ---------- */
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 320px;
+  height: 30px;
+  padding: 5px 9px;
+  font-size: 17px;
+  line-height: 30px;
+  border: 2px solid #ccc;
+  outline: none;
+  margin-top: .5em;
+  margin-left: .4em;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #0097cf;
+}
+
+.tt-query {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-dropdown-menu {
+  width: 328px;
+  padding: 5px 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  margin-left: .5em;
+}
+
+.tt-suggestion {
+  font-size: 1em;
+  line-height: 1em;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+.gist {
+  font-size: 14px;
+}
+
+/* example specific styles */
+/* ----------------------- */
+
+.example-twitter-oss .tt-suggestion {
+  padding: 5px 5px;
+}
+
+.example-twitter-oss .tt-suggestion + .tt-suggestion {
+  border-top: 1px solid #ccc;
+}
+
+.example-twitter-oss .repo-language {
+  float: left;
+  font-style: italic;
+  display: block;
+}
+
+.example-twitter-oss .repo-name {
+  font-weight: bold;
+  display: block;
+  margin-left: 80px;
+}
+
+.example-twitter-oss .repo-description {
+  font-size: 13px;
+  display: block;
+  margin-left: 80px;
+}

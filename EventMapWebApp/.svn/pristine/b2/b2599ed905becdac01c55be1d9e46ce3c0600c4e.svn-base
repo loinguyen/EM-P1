@@ -1,0 +1,142 @@
+######## Common
+label.common.username=T\u00ean \u0111\u0103ng nh\u1eadp
+label.common.username.eng=Username
+label.common.password=M\u1eadt kh\u1ea9u
+label.common.confirm.password=X\u00e1c nh\u1eadn m\u1eadt kh\u1ea9u
+label.common.password.old=M\u1eadt kh\u1ea9u c\u0169
+label.common.password.new=M\u1eadt kh\u1ea9u m\u1edbi
+label.common.password.new.confirm=X\u00e1c nh\u1eadn m\u1eadt kh\u1ea9u m\u1edbi
+label.common.login=\u0110\u0103ng nh\u1eadp
+label.common.webname=Eventmap
+label.common.role=Role
+label.common.role.admin=Qu\u1ea3n tr\u1ecb
+label.common.role.mod=Qu\u1ea3n l\u00fd
+label.common.role.member=Th\u00e0nh vi\u00ean
+label.common.role.inactive=Ch\u01b0a k\u00edch ho\u1ea1t
+label.common.role.banned=Banned
+label.common.reason=Reason
+label.common.email=Email
+label.common.like=Like
+label.common.to=\u0110\u1ebfn
+label.common.from=T\u1eeb
+label.common.subject=Ti\u00eau \u0111\u1ec1
+label.common.content=N\u1ed9i dung
+label.common.title=Ti\u00eau \u0111\u1ec1
+label.common.time=Th\u1eddi gian
+label.common.category=Danh m\u1ee5c
+label.common.contact=Li\u00ean h\u1ec7
+label.common.rememberme= Auto Login
+label.common.avatar= H\u00ecnh \u0111\u1ea1i di\u1ec7n
+label.common.address= \u0110\u1ecba ch\u1ec9
+label.common.job= Ngh\u1ec1 nghi\u1ec7p
+label.common.gender= Gi\u1edbi t\u00ednh
+label.common.male= Nam
+label.common.female= N\u1eef
+label.common.dob= Ng\u00e0y sinh
+label.common.fullname= H\u1ecd v\u00e0 T\u00ean
+label.common.edit=Thay \u0111\u1ed5i
+label.common.cancel=H\u1ee7y
+label.common.save=L\u01b0u thay \u0111\u1ed5i
+
+######## Admin
+label.admincp=Admin Control Panel
+label.adminr=Administrator
+label.adminn=Administration
+label.admin.manage.user=Manage User
+label.admin.manage.user.desc=Create, promote, ban, delete and find users
+label.admin.manage.report=Manage report
+label.admin.manage.report.desc=Manage report of each event
+label.admin.manage.event=Manage event
+label.admin.manage.event.desc=Manage an event when it has changes
+label.admin.manage.rank=Manage rank
+label.admin.manage.rank.desc=Manage rank of each event
+label.admin.create.new.user=Create new use
+label.admin.ban.user=Ban user
+label.admin.expiry.date=Expiry date
+label.admin.report.list=Report list
+label.admin.report.count=S\u1ed1 l\u01b0\u1ee3ng
+label.admin.report.eventCreatedUserId= Created by  
+
+######## Buttons
+label.button.done=Done
+label.button.send=Send
+label.button.apporve=Approve
+label.button.reject=Reject
+label.button.promote=Promote
+
+######## Event
+lable.event.address=\u0110\u1ecba \u0111i\u1ec3m
+label.event.full.desc=Chi ti\u1ebft
+label.event.date=Ng\u00e0y
+label.event.user=Ng\u01b0\u1eddi t\u1ea1o
+label.event.rank=Rank
+label.event.rank.1=Rank 1
+label.event.rank.2=Rank 2
+label.event.rank.3=Rank 3
+label.event.rank.4=Rank 4
+label.event.rank.5=Rank 5
+label.event.category.music=\u00e2m nh\u1ea1c
+label.event.category.fair=h\u1ed9i th\u1ea3o
+label.event.category.sport=th\u1ec3 thao
+label.event.category.art=ngh\u1ec7 thu\u1eadt
+label.event.category.film=\u0111i\u1ec7n \u1ea3nh
+label.event.category.offline=h\u1ecdp m\u1eb7t
+label.event.category.saleoff=khuy\u1ebfn m\u1ea1i
+label.event.category.other=kh\u00e1c
+label.event.category=Th\u1ec3 lo\u1ea1i
+
+######## Event Detail
+label.eventDetail.findLocation=T\u00ecm \u0111\u01b0\u1eddng
+label.eventDetail.bookmark=\u0110\u00e1nh d\u1ea5u
+label.eventDetail.like=Y\u00eau th\u00edch
+label.eventDetail.share=Chia s\u1ebb
+label.eventDetail.report=B\u00e1o c\u00e1o sai ph\u1ea1m
+label.eventDetail.fullDes=Gi\u1edbi thi\u1ec7u
+label.eventDetail.more=Xem th\u00eam
+label.eventDetail.post=\u0110\u0103ng b\u00ecnh lu\u1eadn
+label.eventDetail.post.placeholder=Vi\u1ebft b\u00ecnh lu\u1eadn
+label.eventDetail.login.to.comment=\u0110\u0103ng nh\u1eadp \u0111\u1ec3 b\u00ecnh lu\u1eadn.
+label.eventDetail.btn.edit=Ch\u1ec9nh s\u1eeda
+label.eventDetail.btn.delete=X\u00f3a
+
+######## Report
+label.event.report.details=N\u1ed9i dung sai ph\u1ea1m
+label.event.report.btn.send=G\u1eedi b\u00e1o c\u00e1o
+
+######## Other
+label.validation.require.all.msg=All form fields are required.
+label.validation.require.some.msg=Some form fields are required.
+
+######## Create Event
+label.create.event.date.from=T\u1eeb ng\u00e0y
+label.create.event.date.to=\u0110\u1ebfn ng\u00e0y
+label.create.event.create.new=T\u1ea1o s\u1ef1 ki\u1ec7n m\u1edbi
+label.create.event.name=T\u00ean s\u1ef1 ki\u1ec7n
+label.create.event.time=Th\u1eddi gian
+label.create.event.update.event=Ch\u1ec9nh s\u1eeda th\u00f4ng tin s\u1ef1 ki\u1ec7n
+label.create.event.btn.add=\u0110\u0103ng s\u1ef1 ki\u1ec7n
+
+######## Menu bar
+label.menu.home=Trang ch\u1ee7
+label.menu.create.event=T\u1ea1o s\u1ef1 ki\u1ec7n m\u1edbi
+label.menu.event.list=Danh s\u00e1ch s\u1ef1 ki\u1ec7n
+label.menu.help=Tr\u1ee3 gi\u00fap
+label.menu.login.register=\u0110\u0103ng nh\u1eadp | \u0110\u0103ng k\u00fd
+label.menu.login.greate = Ch\u00e0o b\u1ea1n 
+label.menu.logout=\u0110\u0103ng xu\u1ea5t
+######## Home
+label.bookmark.btn.desc=Danh s\u00e1ch s\u1ef1 ki\u1ec7n \u0111\u00e3 \u0111\u00e1nh d\u1ea5u
+label.minilist.desc=Minilist
+
+######### UserProfile
+label.user.profile=Trang c\u00e1 nh\u00e2n
+label.user.profile.info=Th\u00f4ng tin c\u00e1 nh\u00e2n
+label.user.profile.account=Th\u00f4ng tin t\u00e0i kho\u1ea3n
+label.user.profile.posts=Qu\u1ea3n l\u00fd b\u00e0i \u0111\u0103ng
+label.user.profile.conversations=H\u1ed9i tho\u1ea1i
+label.user.profile.change.pwd=\u0110\u1ed5i m\u1eadt kh\u1ea9u
+label.user.joinedDate=Ng\u00e0y tham gia
+label.user.noOfLike=S\u1ed1 th\u00edch \u0111\u00e3 nh\u1eadn
+label.user.subscribedEvents=Danh s\u00e1ch s\u1ef1 ki\u1ec7n \u0111\u00e3 \u0111\u00e1nh d\u1ea5u
+label.user.NoOfCreatedEvents=S\u1ed1 l\u01b0\u1ee3ng s\u1ef1 ki\u1ec7n \u0111\u00e3 t\u1ea1o
+label.user.last.visitedDate=Truy c\u1eadp l\u1ea7n cu\u1ed1i

@@ -1,0 +1,43 @@
+body{
+	background: #DDD;
+}
+#header {
+	height: 45px;
+	width: 100%;
+	position: fixed;
+	background-color: black;
+	z-index: 999;
+	top:0;
+}
+#wrapper {
+	width:960px;
+	margin: 50px auto;
+}
+.backdrop {
+	position: absolute;
+	font-size: 400pt;
+	font-weight: bold;
+	opacity: 0.2;
+	margin: 200px auto;
+}
+.notice {
+	font-weight: bold;
+	font-size: 16pt;
+	float: left;
+	padding-top: 75px;
+	padding-left: 0px;
+}
+.notice-405 {
+	font-weight: bold;
+	font-size: 16pt;
+	float: left;
+	padding-top: 75px;
+	padding-left: 0px;
+}
+.error-img {
+	float: right;
+	padding: 25px 100px 0 0;
+}
+.error-img img {
+	height:250px;
+}

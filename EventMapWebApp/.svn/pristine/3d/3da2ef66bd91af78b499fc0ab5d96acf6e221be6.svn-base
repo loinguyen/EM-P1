@@ -1,0 +1,218 @@
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<title>Trang cá nhân | Bản đồ sự kiện | EventMap</title>
+		<meta property="og:title" content="Trang cá nhân | Bản đồ sự kiện | EventMap" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+		<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+		<link rel="stylesheet" type="text/css" href="<%=getServletContext().getContextPath()%>/css/jquery-ui.css" />
+		<link rel="stylesheet" type="text/css" href="<%=getServletContext().getContextPath()%>/css/userProfile.css" />
+		<link rel="stylesheet" type="text/css" href="<%=getServletContext().getContextPath()%>/css/demo_table.css" />
+		<link href="<%=getServletContext().getContextPath()%>/css/normalize.css" rel="stylesheet" type="text/css"/>
+		<link href="<%=getServletContext().getContextPath()%>/css/component.css" rel="stylesheet" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="<%=getServletContext().getContextPath()%>/css/datepicker.css" />
+		<link rel="stylesheet" href="<%=getServletContext().getContextPath()%>/css/reset.css" media="screen">
+		<link href="<%=getServletContext().getContextPath()%>/css/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="<%=getServletContext().getContextPath()%>/css/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+	
+		<script src="<%=getServletContext().getContextPath()%>/js/jquery-2.0.2.js"></script>
+		<script src="<%=getServletContext().getContextPath()%>/js/jquery.mCustomScrollbar.js"></script>
+		<script type="text/javascript" src="<%=getServletContext().getContextPath()%>/js/datepicker.js"></script>
+		<script type="text/javascript" src="<%=getServletContext().getContextPath()%>/js/userProfile.js"></script>
+		<script type="text/javascript" src="<%=getServletContext().getContextPath()%>/js/jquery.dataTables.js"></script>
+		<script src="<%=getServletContext().getContextPath()%>/js/modernizr.custom.js"></script>
+		<script src="<%=getServletContext().getContextPath()%>/js/jquery.iframe-post-form.js"></script>
+		<script type="text/javascript">
+		var loggedUserId = '<s:property value="loggedUserId"/>';
+		function updateUserProfile() {
+			if (!validPro5Email()) return;
+			$("#user-dob").val(getDateTime($("#dob").val()));
+			$.ajax ({
+				type: "POST",
+			    url: "<%=getServletContext().getContextPath()%>/user/updateUser", 
+				data: $("#userProfileForm").serialize(),
+				success: function(data) {
+// 				    	$("#sidebar").replaceWith($(data).find("#sidebar"));
+					    	//googleInitialize();
+					return false;
+				    }
+			});
+			
+			
+		}
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<jsp:include page="/WEB-INF/page/Header.jsp" />
+		</div>
+		<div id="wrapper">
+			<h2><fmt:message key='label.user.profile' /></h2>
+			<table id="table-wrapper">
+			<tr>
+			<th id="nav-bar">
+				<nav id="profile-menu" class="cl-effect-6">
+					<a href="" class="profile-tab" id="full-info"><fmt:message key='label.user.profile.info' /></a>
+					<s:if test="%{userId == loggedUserId}">
+						<a href="" class="profile-tab" id="account"><fmt:message key='label.user.profile.change.pwd' /></a>
+					</s:if>
+					<a href="" class="profile-tab" id="posts"><fmt:message key='label.user.profile.posts' /></a>
+					<s:if test="%{userId == loggedUserId}">
+<%-- 						<a href="" class="profile-tab" id="conversations"><fmt:message key='label.user.profile.conversations' /></a> --%>
+					</s:if>
+				</nav>
+				</th><td>
+				<div id="profile-content">
+					<div class="profile-content" id="full-info-content">
+						<form id="userProfileForm">
+							<s:hidden name="user.id"/>
+							<table class="info" id="user-info">
+								<tr>
+									<th><fmt:message key="label.common.avatar"/></th>
+									<td>
+										<div class="avatar">
+											<img class="avatar-img" id="user-avatar" alt="" src="<%=getServletContext().getContextPath()%>/images/usersImages/${user.id}/avatar.jpg" ssheight="100px"/>
+											<div id="loadingImg"></div>
+										</div>
+										<div class="statistic">
+											<label class="full-name"><s:property value="user.id" /></label>
+											<label class="join-date" title="Ngày tham gia"><fmt:formatDate value="${user.joinedDate}" pattern="dd/MM/yyyy" /></label>
+											<label class="number-of-post" title="Số sự kiện đã tạo"><s:property value="user.noOfCreatedEvents" /></label>
+											<label class="total-like" title="Số lượt yêu thích đã nhận" ><s:property value="user.noOfLikes" /></label>
+										</div>
+										<s:if test="%{userId == loggedUserId}">
+											<button id="change-avatar" class="btn-light" onclick="return false;" >Thay hình đại diện</button>
+										</s:if>
+									</td>
+								</tr>
+								<s:if test="%{userId == loggedUserId}">
+									<tr>
+										<th><fmt:message key="label.common.email"/></th>
+										<td>
+											<input id="user-email" type="text" name="user.email" value="<s:property value="user.email" />">
+											<div id="user-email-err" class="register-err"></div>
+										</td>
+									</tr>
+								</s:if>
+<!-- 								<tr> -->
+<%-- 									<th><fmt:message key="label.common.fullname"/></th> --%>
+<!-- 									<td> -->
+<%-- 										<input type="text" name="fullName" value="<s:property value="user." />"> --%>
+<!-- 									</td> -->
+<!-- 								</tr> -->
+								<tr>
+									<th><fmt:message key="label.common.gender"/></th>
+									<td>
+									   <s:radio name="user.sex" list="gender"></s:radio>
+									</td>
+								</tr>
+								<tr>
+									<th><fmt:message key="label.common.dob"/></th>
+									<td>
+										<input id="dob" data-date-format="dd-mm-yyyy" type="text" readonly="readonly" value="<fmt:formatDate value="${user.dob}" pattern="dd-MM-yyyy" />" />
+										<input type="hidden" name="user.dob" id="user-dob"/>
+									</td>
+								</tr>
+								<tr>
+									<th><fmt:message key="label.common.address"/></th>
+									<td>
+										<input type="text" name="user.address" value="<s:property value="user.address" />">
+									</td>
+								</tr>
+								<tr>
+									<th><fmt:message key="label.common.job"/></th>
+									<td>
+										<input type="text" name="user.job" value="<s:property value="user.job" />">
+									</td>
+								</tr>
+								<tr>
+									<th></th>
+									<td id="user-info-btn">
+									<s:if test="%{userId == loggedUserId}">
+										<button onclick="return false;" id="btn-edit" class="btn-light" ><fmt:message key="label.common.edit"/></button>
+										<button onclick="updateUserProfile(); return false;" id="btn-save" class="btn-light" ><fmt:message key="label.common.save"/></button>
+										<button onclick="return false;" id="btn-cancel" class="btn-light" ><fmt:message key="label.common.cancel"/></button>
+									</s:if>
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div>
+					<s:if test="%{userId == loggedUserId}">
+						<div class="profile-content" id="account-content">
+							<form id="changepwd-form">
+								<table class="info">
+									<tr>
+										<th><fmt:message key="label.common.password.old"/></th>
+										<td>
+											<input type="password" name="user.password" id="oldpwd">
+											<div id="err_oldpwd" class="register-err"></div>
+										</td>
+									</tr>
+									<tr>
+										<th><fmt:message key="label.common.password.new"/></th>
+										<td>
+											<input type="password" name="newpwd" id="newpwd">
+											<div id="err_newpwd" class="register-err"></div>
+										</td>
+									</tr>
+									<tr>
+										<th><fmt:message key="label.common.password.new.confirm"/></th>
+										<td>
+											<input type="password" id="cfnewpwd" disabled="disabled" >
+											<div id="err_cfpwd" class="register-err"></div>
+										</td>
+									</tr>
+									<tr>
+										<th></th>
+										<td>
+											<button id="btn-changepwd" class="btn-light" onclick="return false;" ><fmt:message key="label.common.edit"/></button>
+											<div id="changepwd-loading" class="loadingImg" style="display: none"></div>
+										</td>
+									</tr>
+								</table>
+							</form>
+						</div>
+					</s:if>
+					<div class="profile-content" id="posts-content">
+						<form action="" method="post">
+							<table id="data-table" style="width: 100%">
+								<thead>
+									<tr>
+										<th><fmt:message key="label.common.title" /></th>
+										<th><fmt:message key="label.common.time" /></th>
+										<th><fmt:message key="label.event.category" /></th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</form>
+					</div>
+					<div class="profile-content" id="conversations-content">
+						<form action="" method="post">
+							<table class="info">
+								<tr>
+									<th>PENDING</th>
+								</tr>
+							</table>
+						</form>
+					</div>
+				</div>
+			</td>
+			</tr>
+			</table>
+		</div>
+	</body>
+	<form action="<%=getServletContext().getContextPath()%>/upload" method="post" enctype="multipart/form-data" id="ava-upload" target="targetUpload" style="display: none;">
+		<input type="file" name="file" id="avatar" accept="image/*" />
+		<s:checkbox name="avatar" value="true"></s:checkbox>
+	</form>
+	<iframe id="targetUpload" name="targetUpload" style="display: none;"></iframe>
+</html>

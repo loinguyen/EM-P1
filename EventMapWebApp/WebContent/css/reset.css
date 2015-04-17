@@ -1,0 +1,228 @@
+/* 
+html5doctor.com Reset Stylesheet
+v1.4 
+2009-07-27
+Author: Richard Clark - http://richclarkdesign.com
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, dialog, figure, footer, header, 
+hgroup, menu, nav, section, menu,
+time, mark, audio, video {
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+	font-size:100%;
+	vertical-align:baseline;
+	font-weight: normal;
+}
+body {
+	line-height:1;
+	font: normal 14px Segoe UI,arial,sans-serif;
+}
+
+article, aside, dialog, figure, footer, header, 
+hgroup, nav, section { 
+	display:block;
+}
+
+nav ul {
+	list-style:none;
+}
+
+blockquote, q {
+	quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content:'';
+	content:none;
+}
+a {
+	text-decoration: none;
+}
+
+.info a, .bookmark-notification  a {
+	margin:0;
+	padding:0;
+	border:0;
+	font-size:100%;
+	vertical-align:baseline;
+	background:transparent;
+	outline: 0;
+	color: #FFF;
+	text-decoration: none;
+}
+
+.info a:hover, .bookmark-notification a:hover {
+	color:#CCF5CC;
+}
+
+ins {
+	background-color:#ff9;
+	color:#000;
+	text-decoration:none;
+}
+
+mark {
+	background-color:#ff9;
+	color:#000;	
+	font-style:italic;
+	font-weight:bold;
+}
+
+del {
+	text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+	border-bottom:1px dotted #000;
+	cursor:help;
+}
+
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+}
+
+hr {
+    display:block;
+    height:1px;
+    border:0;	
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+	vertical-align:middle;
+}
+input{
+	height: 24pt;
+	border-radius: 2px;
+	border: 1px solid #d2d2d2;
+	padding-left: 7px;
+}
+input:focus { 
+    outline:none;
+    border-color:#019875;
+    box-shadow:0 0 10px #9ecaed;
+}
+#header{
+	height: 41px;
+	width: 100%;
+	position: fixed;
+	background-color: #000;
+	z-index: 999;
+	top:0;
+}
+.btn-light{
+	background: #019875;
+	color: #FFF;
+	border: 2px solid #019875;
+	cursor:pointer;
+	border-radius:2px;
+	height: 30px;
+	padding-right: 1em;
+	margin-right: 0.7em;
+	padding-left: 1em;
+	transition: color 0.3s, background 0.3s;
+}
+.btn-dark{
+	background: #2d2d2d;
+	color: #FFF;
+	border: 2px solid #2d2d2d;
+	cursor:pointer;
+	border-radius:2px;
+	height: 30px;
+	padding-right: 1em;
+	margin-right: 0.7em;
+	padding-left: 1em;
+	transition: color 0.3s, background 0.3s;
+}
+.btn-light:hover{
+	background: #FFF;
+	color: #019875;
+	margin-top:-1px;
+}
+.btn-light:active{
+	position: relative;
+	margin-top:0;
+}
+.btn-dark:active{
+	position: relative;
+	margin-top:0;
+}
+.btn-dark:hover{
+	background: #FFF;
+	color: #2d2d2d;
+	margin-top:-1px;
+}
+.suggestsearch.odd {
+	background: #E2E4FF;
+}
+.suggestsearch.even {
+	background: white;
+}
+.suggestsearch.current {
+	background: purple !important;
+	color: white !important;
+	cursor: pointer !important;
+}
+.suggestsearch {
+	padding: 1px 5px 1px 10px;
+	text-align: justify;
+}
+.btn-red{
+	background: red;
+	color: #FFF;
+	border: 2px solid red;
+	cursor:pointer;
+	border-radius:2px;
+	height: 30px;
+	padding-right: 1em;
+	padding-left: 1em;
+	transition: color 0.3s, background 0.3s;
+}
+.btn-orange{
+	background: rgb(228, 120, 3);
+	color: #FFF;
+	border: 2px solid rgb(228, 120, 3);
+	cursor:pointer;
+	border-radius:2px;
+	height: 30px;
+	padding-right: 1em;
+	padding-left: 1em;
+	transition: color 0.3s, background 0.3s;
+}
+.btn-red:hover{
+	background: #FFF;
+	color: red;
+	margin-top:-1px;
+}
+.btn-red:active{
+	position: relative;
+	margin-top:0;
+}
+.btn-orange:active{
+	position: relative;
+	margin-top:0;
+}
+.btn-orange:hover{
+	background: #FFF;
+	color: rgb(228, 120, 3);
+	margin-top:-1px;
+}
+.datepicker td.active{
+	background: #019875!important;
+}

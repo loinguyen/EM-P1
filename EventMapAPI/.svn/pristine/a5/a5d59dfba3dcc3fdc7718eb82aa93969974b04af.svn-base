@@ -1,0 +1,766 @@
+/**
+ * Legend Company
+ */
+package vn.com.lco.manager;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.stereotype.Service;
+
+import vn.com.lco.constants.Constants;
+import vn.com.lco.dto.CommentDTO;
+import vn.com.lco.dto.EventDTO;
+import vn.com.lco.dto.EventPromotionLogDTO;
+import vn.com.lco.dto.EventReportDTO;
+import vn.com.lco.dto.EventSearchDTO;
+import vn.com.lco.dto.NotificationContentDTO;
+import vn.com.lco.dto.NotificationDTO;
+import vn.com.lco.dto.TempEventDTO;
+import vn.com.lco.model.Comment;
+import vn.com.lco.model.Event;
+import vn.com.lco.model.EventPromotionLog;
+import vn.com.lco.model.EventReport;
+import vn.com.lco.model.Notification;
+import vn.com.lco.model.TempEvent;
+import vn.com.lco.model.TrendingHotEvent;
+import vn.com.lco.model.User;
+import vn.com.lco.model.UserInteractLog;
+import vn.com.lco.repository.CommentRepository;
+import vn.com.lco.repository.EventPromotionLogRepository;
+import vn.com.lco.repository.EventReportRepository;
+import vn.com.lco.repository.EventRepository;
+import vn.com.lco.repository.NotificationRepository;
+import vn.com.lco.repository.TempEventRepository;
+import vn.com.lco.repository.TrendingHotEventRepository;
+import vn.com.lco.repository.UserInteractLogRepository;
+import vn.com.lco.repository.UserRepository;
+import vn.com.lco.utility.CommonUtils;
+import vn.com.lco.utility.DateUtils;
+
+import com.mongodb.BasicDBObject;
+
+/**
+ * @author OaiPanda
+ * 
+ *         EventManager.java
+ */
+
+/**
+ * @author OaiPanda
+ *
+ * EventManager.java
+ */
+@Service
+public class EventManager {
+
+	/*------------------------------------ Repository ------------------------------------*/
+	@Autowired
+	private EventPromotionLogRepository eventPromotionLogRepository;
+
+	@Autowired
+	private EventReportRepository eventReportRepository;
+
+	@Autowired
+	private EventRepository eventRepository;
+
+	@Autowired
+	private TempEventRepository tempEventRepository;
+	
+	@Autowired
+	private CommentRepository commentRepository;
+
+	@Autowired
+	private MongoOperations mongoOperation;
+	
+	@Autowired
+	private NotificationRepository notificationRepository;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private UserInteractLogRepository userInteractLogRepository;
+	
+	@Autowired
+	private TrendingHotEventRepository trendingHotEventRepository; 
+
+	/*------------------------------------ Public method ------------------------------------*/
+	
+	public List<Event> findAllBookMarkEvent(EventSearchDTO requestDTO) {
+		return eventRepository.findBySubscribers(requestDTO.getUid());
+	}
+	/**
+	 * create event with full properties.
+	 * 
+	 * @param eventDTO store event data
+	 * @return event new event has created.
+	 */
+	public Event saveEvent(EventDTO eventDTO) {
+		// convert data from eventDTO to event entity
+		Event event = new Event();
+		event.setId(eventDTO.getId());
+		event.setTitle(eventDTO.getTitle());
+		event.setCategory(eventDTO.getCategory());
+		event.setLocation(eventDTO.getLocation());
+		event.setAddress(eventDTO.getAddress());
+		event.setContact(eventDTO.getContact());
+		event.setShortDes(eventDTO.getShortDes());
+		event.setFullDes(eventDTO.getFullDes());
+		event.setAlbum(eventDTO.getAlbum());
+		event.setRank(eventDTO.getRank()); // default lvl of all new event is 1
+		event.setFromDate(eventDTO.getFromDate());
+		event.setToDate(eventDTO.getToDate());
+		event.setCreatedDate(eventDTO.getCreatedDate());
+		event.setUserId(eventDTO.getUserId());
+		event.setType(eventDTO.getType());
+		event.setTag(eventDTO.getTag());
+		event.setPoint(eventDTO.getPoint());
+		
+		// edit by OaiDQ
+		Event currentEvent = eventRepository.findByIdAndDeleteFlag(event.getId(), false);
+		if (currentEvent != null && currentEvent.getRank() != event.getRank()) {
+			
+			// insert to userInteractLog
+			UserInteractLog userInteractLog = new UserInteractLog();
+			userInteractLog.setId(UUID.randomUUID().toString());
+			userInteractLog.setOperation(Constants.userInteract.OPERATON_UPDATE_RANK);
+			userInteractLog.setEventId(event.getId() + "-" + event.getRank());
+			userInteractLog.setTimeLog(new Date());
+			
+			CommonUtils.saveUserInteractLog(userInteractLogRepository, userInteractLog);
+		}
+		
+		return eventRepository.save(event);
+
+	}
+
+	/**
+	 * Save event
+	 * 
+	 * @param event Event
+	 * @return Event
+	 */
+	public Event saveEvent(Event event) {
+		
+		// update notify 
+		List<Notification> notifications = notificationRepository.findByEventId(event.getId(), event.getUserId());
+		
+		if (notifications != null) {
+			Iterator<Notification> iterator = notifications.iterator();
+			while (iterator.hasNext()) {
+				Notification notify = iterator.next();
+				List<String> userUpdateList = notify.getUserUpdateList();
+				
+				if (userUpdateList != null) {
+					//check if contain userId
+					if (userUpdateList.contains(event.getUserId())) {
+						
+						//if contain then move this userId to bottom.
+						int index = userUpdateList.indexOf(event.getUserId());
+						userUpdateList.remove(index);
+						userUpdateList.add(event.getUserId());
+					}else {
+						
+						//if not add userId
+						userUpdateList.add(event.getUserId());
+					}
+				} else {
+					userUpdateList = new ArrayList<String>();
+					userUpdateList.add(event.getUserId());
+					notify.setUserUpdateList(userUpdateList);
+				}
+				
+				notify.setStatus(Constants.Notify.STATUS_UNREAD);
+				
+				notificationRepository.save(notify);
+			
+			}
+		}
+		
+		return eventRepository.save(event);
+	}
+
+	/**
+	 * Find Event by eventId
+	 * 
+	 * @param id String
+	 * @return Event
+	 */
+	public Event findEventById(String id, boolean fromStorm) {
+		
+		if (!fromStorm) {
+			
+			// insert to userInteractLog
+			UserInteractLog userInteractLog = new UserInteractLog();
+			userInteractLog.setId(UUID.randomUUID().toString());
+			userInteractLog.setOperation(Constants.userInteract.OPERATON_VIEW);
+			userInteractLog.setEventId(id);
+			userInteractLog.setTimeLog(new Date());
+			
+			
+			CommonUtils.saveUserInteractLog(userInteractLogRepository, userInteractLog);
+		}
+		
+		Event event = eventRepository.findByIdAndDeleteFlag(id, false);
+		return event;
+	}
+	
+	/**
+	 * Find Event by eventId
+	 * 
+	 * @param id String
+	 * @return Event
+	 */
+	public Event findEventById(String id) {
+		return findEventById(id, false);
+	}
+
+	/**
+	 * Find all events
+	 * 
+	 * @return List<Event>
+	 */
+	public List<Event> findAllEvents() {
+		BasicQuery query = new BasicQuery("{deleteFlag: false}");
+		BasicDBObject sortObject = new BasicDBObject();
+		sortObject.put("createdDate", -1);
+		query.setSortObject(sortObject);
+		List<Event> events = mongoOperation.find(query, Event.class);
+		// List<Event> events = mongoOperation.findAll(Event.class);
+
+		return events;
+	}
+	
+	/**
+	 * function use to search event base on condition
+	 * 
+	 * @param requestDTO contain search parameter.
+	 * @return List<Event> list contain search result
+	 */
+	public List<Event> findEventsByCondition(EventSearchDTO requestDTO) {
+		List<Event> searchedEventList = new ArrayList<Event>();
+		String category = requestDTO.getCategory();
+		Calendar newDateVal = Calendar.getInstance();
+		newDateVal.set(Calendar.HOUR_OF_DAY,0);
+		newDateVal.set(Calendar.MINUTE,0);
+		newDateVal.set(Calendar.SECOND,0);
+		newDateVal.set(Calendar.MILLISECOND,0);
+		String newDate = DateUtils.formatDate(Constants.dateFormat.ISO_STRING_FORMAT, newDateVal.getTime());
+		if(requestDTO.getDate() == null) {
+			searchedEventList = eventRepository.findByToDateNotLessThanAndCategoryLike(newDate, category, new Sort(Sort.Direction.DESC, "createdDate"));
+		}else {
+			searchedEventList = eventRepository.findByToDateBetweenAndCategoryLike(new Date(), requestDTO.getDate(), category);
+		}
+		return searchedEventList;
+	}
+
+	/**
+	 * Find all temporary events and will return title, category, userId,
+	 * modDate, sort by modDate
+	 * 
+	 * @return List<User>
+	 */
+	public List<TempEvent> findAllTempEvents() {
+
+		// return userRepository.findAll(new Sort(Sort.Direction.DESC,
+		// "joinedDate"));
+		BasicQuery query = new BasicQuery("{ status : null }");
+		BasicDBObject sortObject = new BasicDBObject();
+		sortObject.put("createdDate", 1);
+		query.setSortObject(sortObject);
+		List<TempEvent> tempEvents = mongoOperation
+				.find(query, TempEvent.class);
+
+		return tempEvents;
+	}
+
+	/**
+	 * Find unhandled temporary event by eventId
+	 * 
+	 * @param eventId String
+	 * @return TempEvent
+	 */
+	public TempEvent findUnhandledTempEventByEventId(String eventId) {
+
+		BasicDBObject queryObj = new BasicDBObject();
+		queryObj.put("status", null);
+		queryObj.put("eventId", eventId);
+		BasicQuery query = new BasicQuery(queryObj);
+
+		return mongoOperation.findOne(query, TempEvent.class);
+
+	}
+
+	/**
+	 * Find temporary event by eventId
+	 * 
+	 * @param id String
+	 * @return TempEvent
+	 */
+	public TempEvent findTempEventById(String id) {
+		return tempEventRepository.findOne(id);
+	}
+
+	/**
+	 * Save temporary event
+	 * 
+	 * @param tmpEvent TempEvent
+	 * @return TempEvent
+	 */
+	public TempEvent saveTempEvent(TempEvent tmpEvent) {
+		return tempEventRepository.save(tmpEvent);
+	}
+
+	/**
+	 * Get temporary event by id
+	 * 
+	 * @param tempEventUpdateDTO TempEventDTO
+	 * @return TempEvent
+	 */
+	public TempEvent getTempEvent(TempEventDTO tempEventUpdateDTO) {
+
+		return tempEventRepository.findOne(tempEventUpdateDTO.getId());
+	}
+
+	/**
+	 * Update status for temporary event
+	 * 
+	 * @param tempEventUpdateDTO TempEventDTO
+	 * @return TempEvent
+	 */
+	public TempEvent updateTempEventStatus(TempEventDTO tempEventUpdateDTO) {
+
+		TempEvent existingTempEvent = tempEventRepository
+				.findOne(tempEventUpdateDTO.getId());
+		if (existingTempEvent == null) {
+
+			return null;
+		}
+
+		existingTempEvent.setStatus(tempEventUpdateDTO.getStatus());
+		existingTempEvent.setModDate(tempEventUpdateDTO.getModDate());
+
+		return tempEventRepository.save(existingTempEvent);
+	}
+
+	/**
+	 * Find all rank events and will return title, category, userId, rank, sort by modDate
+	 * 
+	 * @return List<User>
+	 */
+	public List<Event> findAllRankEvents() {
+
+		BasicQuery query = new BasicQuery("{deleteFlag: false }",
+				"{ title : '1', category: '1', userId : '1', rank : '1' }");
+		BasicDBObject sortObject = new BasicDBObject();
+		sortObject.put("modDate", -1);
+		query.setSortObject(sortObject);
+		List<Event> events = mongoOperation.find(query, Event.class);
+
+		return events;
+	}
+
+	/**
+	 * Update rank of event and create event promotion log
+	 * 
+	 * @param eventPromoteDTO EventDTO
+	 * @param eventPromotionLogDTO EventPromotionLogDTO
+	 * @return Event
+	 */
+	public Event promoteEvent(EventDTO eventPromoteDTO,
+			EventPromotionLogDTO eventPromotionLogDTO) {
+		Event exsistingEvent = eventRepository.findOne(eventPromoteDTO.getId());
+		if (exsistingEvent == null) {
+
+			return null;
+		}
+		exsistingEvent.setRank(eventPromoteDTO.getRank());
+
+		// Create event promotion log
+		EventPromotionLog eventPromotionLog = new EventPromotionLog();
+		eventPromotionLog.setId(UUID.randomUUID().toString());
+		eventPromotionLog.setEventId(eventPromotionLogDTO.getEventId());
+		eventPromotionLog.setUserId(eventPromotionLogDTO.getUserId());
+		eventPromotionLog.setReason(eventPromotionLogDTO.getReason());
+		eventPromotionLogRepository.save(eventPromotionLog);
+
+		return eventRepository.save(exsistingEvent);
+	}
+
+	/**
+	 * Get number of reports, title, category of event which has status is null
+	 * 
+	 * @return List<EventReportDTO>
+	 */
+	public List<EventReportDTO> findAllReportEvents() {
+
+		BasicQuery query = new BasicQuery("{ status : { $ne : 'done' } }",
+				"{ eventTitle : '1', eventCat: '1', listReport : '1' }");
+		BasicDBObject sortObject = new BasicDBObject();
+		sortObject.put("modDate", -1);
+		query.setSortObject(sortObject);
+		List<EventReport> eventReports = mongoOperation.find(query,
+				EventReport.class);
+
+		List<EventReportDTO> listEventReportDTO = new ArrayList<EventReportDTO>();
+		Iterator<EventReport> iter = eventReports.iterator();
+		while (iter.hasNext()) {
+			EventReport obj = iter.next();
+			EventReportDTO erDTO = new EventReportDTO();
+			erDTO.setEventTitle(obj.getEventTitle());
+			erDTO.setEventCat(obj.getEventCat());
+			erDTO.setId(obj.getId());
+			erDTO.setNoOfReports(obj.getListReport().size());
+
+			listEventReportDTO.add(erDTO);
+		}
+
+		return listEventReportDTO;
+	}
+
+	/**
+	 * Get event title, list reports from id of event report
+	 * 
+	 * @param eventReportDTO EventReportDTO
+	 * @return EventReportDTO
+	 */
+	public EventReportDTO getListReports(EventReportDTO eventReportDTO) {
+
+		EventReport existingER = eventReportRepository.findOne(eventReportDTO
+				.getId());
+		EventReportDTO erDTO = new EventReportDTO();
+		erDTO.setId(existingER.getId());
+		erDTO.setEventId(existingER.getEventId());
+		erDTO.setEventTitle(existingER.getEventTitle());
+		erDTO.setListReport(existingER.getListReport());
+		erDTO.setEventUid(existingER.getEventUid());
+
+		return erDTO;
+	}
+
+	/**
+	 * Resolve report by update status for EventReport collection
+	 * 
+	 * @param eventReportDTO EventReportDTO
+	 * @return EventReport
+	 */
+	public EventReport resolveEventReport(EventReportDTO eventReportDTO) {
+
+		EventReport existingER = eventReportRepository.findOne(eventReportDTO
+				.getId());
+		existingER.setStatus(eventReportDTO.getStatus());
+		existingER.setModId(eventReportDTO.getModId());
+		existingER.setModDate(eventReportDTO.getModDate());
+
+		return eventReportRepository.save(existingER);
+	}
+	
+	/**
+	 * Find unhandled event report by eventId
+	 * 
+	 * @param eventId String
+	 * @return EventReport
+	 */
+	public EventReport findUnhandledEventReportByEventId(String eventId) {
+		
+		BasicDBObject queryObj = new BasicDBObject();
+		queryObj.put("status", null);
+		queryObj.put("eventId", eventId);
+		BasicQuery query = new BasicQuery(queryObj);
+
+		return mongoOperation.findOne(query, EventReport.class);
+	}
+	
+	/**
+	 * Save event report
+	 * 
+	 * @param eventrp EventReport
+	 * @return EventReport
+	 */
+	public EventReport saveEventReport(EventReport eventrp) {
+		return eventReportRepository.save(eventrp);
+	}
+	
+	
+	/**
+	 * Create a comment when user comment in an event 
+	 * @param CommentDTO commentDTO
+	 * @return Comment
+	 */
+	public Comment createComment(CommentDTO commentDTO) {
+		
+		Comment comment = new Comment();
+		comment.setId(UUID.randomUUID().toString());
+		comment.setUserId(commentDTO.getUserId());
+		comment.setCreatedDate(commentDTO.getCreatedDate());
+		comment.setContent(commentDTO.getContent());
+		comment.setEventId(commentDTO.getEventId());
+		
+		// update notify 
+		List<Notification> notifications = notificationRepository.findByEventId(commentDTO.getEventId(), commentDTO.getUserId());
+		if (notifications != null) {
+		
+			Iterator<Notification> iterator = notifications.iterator();
+			while (iterator.hasNext()) {
+				Notification notify = iterator.next();
+				List<String> userCommentList = notify.getUserCommentList();
+				
+				//check if contain userId
+				if (userCommentList == null) {
+					userCommentList = new ArrayList<String>();
+				}
+				if (userCommentList.contains(commentDTO.getUserId())) {
+					
+					//if contain then move this userId to bottom.
+					int index = userCommentList.indexOf(commentDTO.getUserId());
+					userCommentList.remove(index);
+					userCommentList.add(commentDTO.getUserId());
+				}else {
+					
+					//if not add userId
+					userCommentList.add(commentDTO.getUserId());
+				}
+				notify.setUserCommentList(userCommentList);
+				notify.setStatus(Constants.Notify.STATUS_UNREAD);
+				
+				notificationRepository.save(notify);
+			
+			}
+		}
+		
+		// insert to userInteractLog
+		UserInteractLog userInteractLog = new UserInteractLog();
+		userInteractLog.setId(UUID.randomUUID().toString());
+		userInteractLog.setOperation(Constants.userInteract.OPERATON_COMMENT);
+		userInteractLog.setEventId(commentDTO.getEventId());
+		userInteractLog.setTimeLog(new Date());
+		
+		CommonUtils.saveUserInteractLog(userInteractLogRepository, userInteractLog);
+
+		return commentRepository.save(comment);
+	}
+	
+	/**
+	 * Find list comments by eventId and deleteFlag is false, they will be sorted by createdDate
+	 * 
+	 * @param requestDTO CommentDTO
+	 * @return List<Comment>
+	 */
+	public List<Comment> findListComment(CommentDTO requestDTO) {
+		
+		//get all comment which not deleted.
+		List<Comment> listComment = commentRepository.findByEventIdAndDeleteFlag(requestDTO.getEventId(), false, new Sort(Sort.Direction.DESC, "createdDate"));
+		
+		return listComment;
+	}
+	
+	/**
+	 * Find notify for an event
+	 * 
+	 * @param eventId String
+	 * @return String notify content
+	 */
+	public NotificationContentDTO findEventNotify(NotificationDTO notifyDto) {
+		
+		Notification notify = notificationRepository.findBySubscriberIdAndEventId(notifyDto.getUserId(), notifyDto.getEventId());
+		String eventNotify = "", notifyComment = "", notifyUpdate = "", notifyId = "", eventId = "", status = "";
+		if (notify != null) {
+			
+			List<String> userCommentList = notify.getUserCommentList();
+			List<String> userUpdateList = notify.getUserUpdateList();
+			
+			if (userCommentList != null) {
+				if (userCommentList.size() != 0) {
+					notifyComment = this.createListUserForNotify(notify.getUserCommentList()) + Constants.Notify.NOTIFY_COMMENT;
+				}
+			}
+			
+			if (userUpdateList != null) {
+				if (userUpdateList.size() != 0) {
+					notifyUpdate = this.createListUserForNotify(notify.getUserUpdateList()) + Constants.Notify.NOTIFY_UPDATE;
+				}
+			}
+			notifyId = notify.getId();
+			eventId = notify.getEventId();
+			status = notify.getStatus();
+		}
+		eventNotify = "{ \"notifyId\" : \"" + notifyId + "\", \"eventId\" : \"" + eventId + "\", \"notifyComment\" : \"" + notifyComment + "\", \"notifyUpdate\" : \"" + notifyUpdate + "\" }";
+		NotificationContentDTO notiContentDTO = new NotificationContentDTO();
+		notiContentDTO.setContent(eventNotify);
+		notiContentDTO.setStatus(status);
+		
+		return notiContentDTO;
+	}
+	
+	/**
+	 * function use to delete event and related information
+	 * @param requestDTO contain information about eventId, userId (owner of event) and number of like of event.
+	 * @return Event which is deleted
+	 */
+	public Event deleteEvent(EventDTO requestDTO){
+		Event event = new Event();
+		
+		//delete bookMark in user
+		List listEventId = new ArrayList();
+		listEventId.add(requestDTO.getId());
+		List<User> userList = userRepository.findBySubcribedEvents(requestDTO.getId());
+		
+		for (int i = 0; i < userList.size(); i++) {
+			User tmpUser = userList.get(i);
+			int index = tmpUser.getSubcribedEvents().indexOf(requestDTO.getId());
+			tmpUser.getSubcribedEvents().remove(index);
+		}
+		
+		userRepository.save(userList);
+		// decrease like of event owner.
+		User eventOwner = userRepository.findById(requestDTO.getUserId());
+		if(requestDTO.getLike() != null) {
+			int likeNumber = eventOwner.getNoOfLikes() - requestDTO.getLike().size();
+			eventOwner.setNoOfLikes(likeNumber);
+		}
+		userRepository.save(eventOwner);
+		
+		//delete all notify
+		List<Notification> notificationList = notificationRepository.findByEventId(requestDTO.getId());
+		notificationRepository.delete(notificationList);
+		
+		//delete event
+		event = eventRepository.findOne(requestDTO.getId());
+		event.setDeleteFlag(true);
+		event = eventRepository.save(event);
+		
+		return event;
+	}
+	
+	/**
+	 * function use to increate like of an event and owner of event
+	 * @param requestDTO contain information about eventId, userId who like event.
+	 * @return number of like after update
+	 */
+	public int likeEvent(EventDTO requestDTO) {
+		Event searchedEvent = eventRepository.findByIdAndDeleteFlag(requestDTO.getId(), false);
+		
+		// init userInteractLog object
+		UserInteractLog userInteractLog = new UserInteractLog();
+		userInteractLog.setId(UUID.randomUUID().toString());
+		userInteractLog.setEventId(requestDTO.getId());
+		userInteractLog.setTimeLog(new Date());
+		
+		if (searchedEvent != null) {
+			String ownerId = searchedEvent.getUserId();
+			User owner = userRepository.findById(ownerId);
+			
+			// Increase like list in event
+			List<String> numberOfLike = searchedEvent.getLike();
+			
+			if(numberOfLike != null) {
+				
+				if(!numberOfLike.contains(requestDTO.getUserId())) {
+					numberOfLike.add(requestDTO.getUserId());
+					
+					//increate NumberOfLike of ownerUser
+					owner.setNoOfLikes(owner.getNoOfLikes()+1);
+					userInteractLog.setOperation(Constants.userInteract.OPERATON_LIKE);
+				} else { //if user already like this event so this is unlike action.
+					numberOfLike.remove(requestDTO.getUserId());
+					
+					// decrease NumberOfLike of ownerUser
+					owner.setNoOfLikes(owner.getNoOfLikes()-1);
+					userInteractLog.setOperation(Constants.userInteract.OPERATON_UNLIKE);
+				}
+				
+			} else {
+				numberOfLike = new ArrayList<String>();
+				numberOfLike.add(requestDTO.getUserId());
+				searchedEvent.setLike(numberOfLike);
+			}
+			
+			Event returnEvent = eventRepository.save(searchedEvent);
+			userRepository.save(owner);
+			
+			// insert to userInteractLog
+			if (returnEvent != null) {
+				CommonUtils.saveUserInteractLog(userInteractLogRepository, userInteractLog);
+			}
+			
+			return returnEvent.getLike().size();
+			
+		}else {
+			return 0;
+		}
+	}
+	
+	/**
+	 * Get all trending hot event.
+	 * @return List<TrendingHotEvent>
+	 */
+	public List<TrendingHotEvent> findAllTrendingHotEvent() {
+		
+		return trendingHotEventRepository.findAll();
+	}
+	
+	/**
+	 * get all top ranking eventId
+	 * @return
+	 */
+	public List<Event> findAllTopRakingEvent() {
+		Pageable page = new PageRequest(0,Constants.Event.NUMBER_TOP_EVENT, new Sort(Sort.Direction.DESC, "point"));
+		String newDate = DateUtils.formatDate(Constants.dateFormat.ISO_STRING_FORMAT_NO_HOUR, new Date());
+		return eventRepository.findByToDateNotLessThanAndDeleteFlagFalse(newDate, page).getContent();
+	}
+	
+	/**
+	 * get all event info of trendingHotEvent
+	 * @param eventsId list Event Id
+	 * @return
+	 */
+	public List<Event> findAllTrendingHotEventInfo(List<String> eventsId) {
+		List<Event> returnEvents = new ArrayList<Event>();
+		
+		for(int i = 0; i < eventsId.size(); i++ ) {
+			Event event = eventRepository.findByIdAndDeleteFlag(eventsId.get(i), false);
+			if (event != null) {
+				returnEvents.add(event);
+			}
+		}
+		return returnEvents;
+	}
+	
+	/*------------------------------------ Private method ------------------------------------*/
+	
+	/**
+	 * Create list user commented or updated an event
+	 * 
+	 * @param listUser List<String>
+	 * @return String
+	 */
+	private String createListUserForNotify(List<String> listUser) {
+		String users = "";
+		if (listUser.size() > 3) {
+			users += listUser.get(listUser.size()-1) + ", " +
+					 listUser.get(listUser.size()-2) + ", " +
+					 listUser.get(listUser.size()-3) + Constants.Notify.NOTIFY_AND +
+					 (listUser.size() - 3) + Constants.Notify.NOTIFY_OTHERS; 
+		} else {
+			Iterator<String> iterator = listUser.iterator();
+			while (iterator.hasNext()) {
+				String user = iterator.next();
+				users += user + ", ";
+			}
+			users = users.substring(0, users.length()-2);
+		}
+		
+		return users;
+	}
+}

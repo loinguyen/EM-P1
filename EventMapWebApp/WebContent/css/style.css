@@ -1,0 +1,147 @@
+/* Navigation */
+
+#nav {
+	position: fixed;
+	right: 0px;
+	margin-top: -187px;
+	z-index: 10;
+	top: 50%;
+	overflow: hidden;
+	font-size: 12px;
+	width:10px;
+
+	webkit-transition: all .3s ease-out;
+	-moz-transition: all .3s ease-out;
+	-ms-transition: all .3s ease-out;
+	-o-transition: all .3s ease-out;
+	transition: all .3s ease-out;
+	border: 1px solid #019875;
+	border-right: none;
+}
+#nav:hover {
+	width: 170px;
+}
+#nav .nav-box {
+	-webkit-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+	-moz-box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+}
+#nav ul {
+	background-color: #333;
+	overflow: hidden;
+	width: 170px;
+}
+#nav ul li {
+	float: left;
+	width: 170px;
+}
+#nav ul a {
+	display: block;
+	display: -webkit-flex;
+	padding-left: 15px;
+	height: 40px;
+	color: #fff;
+	text-decoration: none;
+	/* white-space: nowrap; */
+	transition: all 0.2s;
+}
+#nav ul a:hover {
+	background-color: #019875;
+}
+#nav ul a .dot {
+	content: '';
+	display: inline-block;
+	position: relative;
+	width: 2px;
+	height: 2px;
+	margin-top: 19px;
+	margin-right: 6px;
+	background-color: #f2f2f2;
+	float: left;
+	margin-left: -11px !important;
+	transition: all 0.3s;
+}
+#nav ul a .icon {
+	display: none;
+	width: 40px;
+	height: 40px;
+	background-size: 40px;
+	background-repeat: no-repeat;
+	margin-left: -5px !important;
+	transition: all 0.3s;
+	float: left;
+}
+#nav ul a span {
+	float: left;
+	margin-top: 12px;
+	margin-left: 10px;
+}
+#nav ul .active {
+	background-color: #019875;
+}
+#nav:hover .dot {
+	display:none;
+}
+#nav:hover .icon {
+	display:block;
+}
+
+/* Items */
+.da-thumbs li a img {
+		width: 300px;
+		height: 230px;
+	}
+span.fulllist-item-info {
+	display: block;
+	margin: 0 20px 0 20px;
+	font-weight: normal;
+	color: rgba(255,255,255,0.9);
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+.da-thumbs {
+	list-style: none;
+	width: 984px;
+	position: relative;
+	margin: auto;
+	padding: 0;
+	height: 520px;
+}
+.da-thumbs li {
+	float: left;
+	margin: 5px;
+	position: relative;
+}
+.da-thumbs li a,
+.da-thumbs li a img {
+	display: block;
+	position: relative;
+}
+.da-thumbs li a {
+	overflow: hidden;
+}
+.da-thumbs li a div {
+	position: absolute;
+	background: rgba(0,0,0,0.7);
+	width: 100%;
+	height: 100%;	
+}
+.da-thumbs li a div span.title {
+	display: block;
+	padding: 10px 0;
+	margin: 40px 20px 10px 20px;
+	text-transform: uppercase;
+	font-weight: normal;
+	color: rgba(255,255,255,0.9);
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+	border-bottom: 1px solid rgba(255,255,255,0.5);
+	box-shadow: 0 1px 0 rgba(0,0,0,0.1), 0 -10px 0 rgba(255,255,255,0.3);
+}
+#loadingimg, #loadingImg, .loadingImg{
+	background-image: url(../images/FBLoading.gif);
+	position: absolute;
+	height: 11px;
+	width: 16px;
+	top: 60px;
+	right: 20px;
+	z-index: 9999;
+}

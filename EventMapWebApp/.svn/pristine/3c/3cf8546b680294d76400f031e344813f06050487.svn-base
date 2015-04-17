@@ -1,0 +1,179 @@
+@IMPORT url("detailsBase.css");
+
+.ui-dialog .ui-state-error { padding: .3em; }
+.validateTips { border: 1px solid transparent; padding: 0.3em; }
+
+#mapCanvas {
+	width: 380px;
+	height: 380px;
+	position: absolute;
+	background-color: rgb(229, 227, 223);
+	top: 23px;
+	right: 23px;
+	overflow: hidden;
+	-webkit-transform: translateZ(0);
+	border: 1px solid #d2d2d2;
+}
+#left {
+	float: left;
+	height: 90%;
+	width: 45%;
+	margin: 2.5em 1em 1em 1em;
+}
+#right {
+	float: left;
+	margin-top: 6.3em;
+}
+#header {
+	height: 50px;
+	width: 100%;
+	position: fixed;
+	background-color: black;
+	z-index: 999;
+	top:0;
+}
+#eventDetailsForm{
+	margin: 45px auto;
+}
+#panel {
+	position: absolute;
+	top: 25%;
+	left: 10%;
+	z-index: 1;
+	border: 1px solid #999;
+	width: 25%;
+	background-color: #fff;
+}
+.e-create {
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+}
+.nav {
+	position: fixed;
+	right: 5%;
+	top: 7%;
+}
+
+@font-face {
+	font-family: 'icomoonRegular';
+	src: url('fonts/icomoon/icomoon.eot');
+	src: url('fonts/icomoon/icomoon.eot') format('embedded-opentype'),
+		 url('fonts/icomoon/icomoon.woff') format('woff'),
+		 url('fonts/icomoon/icomoon.ttf') format('truetype'),
+		 url('fonts/icomoon/icomoon.svg#icomoonRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* General button style (reset) */
+.btn {
+	float: left;
+	font-family: inherit;
+	font-size: 2em;
+	color: rgba(14, 131, 205, 0.8);
+	background: rgba(0, 0, 0, 0.7);
+	cursor: pointer;
+	display: inline-block;
+	margin: 5px;
+	padding: 10px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	font-weight: 700;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+.btn:hover {
+	color: rgba(14, 131, 205, 0.5);
+	background: rgba(0, 0, 0, 0.7);
+}
+.btn:active {
+	color: rgba(14, 131, 205, 1);
+	background: rgba(0, 0, 0, 0.7);
+}
+/* Pseudo elements for icons */
+.btn:before {
+	font-family: 'icomoonRegular';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+}
+.icon-music:before {
+	content: "\e011";
+}
+
+#image-upload {
+	vertical-align: top!important;
+}
+
+#date-from-to > input {
+	width: 90px;
+}
+#event-title, #event-address, #event-contact {
+	width:385px;
+}
+#dropzone{
+	padding:0 !important;
+	border:3px dashed #d2d2d2;
+	border-radius:2px;
+	width: 790px!important;
+	height: 168px;
+	overflow: hidden;
+}
+.dropzone{
+	background: rgba(0,0,0,0.04)!important;
+}
+.tdLabel{
+	vertical-align: top!important;
+}
+.tdLabel > label {
+	margin:15px!important;
+}
+#tr-full-des > td {
+	margin-top:15px;
+}
+
+#image-area img {
+	max-height:120px;
+	max-width: 177px;
+	border: 1px solid green;
+}
+#image-area a{
+	text-decoration: none;
+	background-color: blue;
+	text-align: center;
+	z-index: 999;
+	color: white !important;
+	margin-left: -28px;
+}
+#image-area span{
+	margin-left: 5px;
+}
+#image-area .loadingImg{
+	right: auto;
+	margin-top: 48px;
+	margin-left: -22px;
+}
+th > label{
+	margin:15px;
+	width:116px;
+}
+.required {
+	color: #F00;
+	font-weight: bold;
+}
+.tdLabel > label {
+	margin-left: 15px !important;
+	margin-top: 5px;
+}
+#event-loading {
+	top: auto;
+	right: auto;
+	margin-left: 150px;
+	margin-top: -17PX;
+}
